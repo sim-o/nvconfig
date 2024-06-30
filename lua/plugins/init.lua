@@ -13,6 +13,59 @@ return {
       require("nvchad.configs.lspconfig").defaults()
       require "configs.lspconfig"
     end,
+    keys = {
+      { "<leader>car", "<Cmd>lua vim.lsp.buf.rename()<CR>",      desc = "Rename" },
+      { "<leader>caa", "<Cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code action..." },
+    },
+  },
+
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+  { "Bilal2453/luvit-meta", lazy = true },
+
+  {
+    "mfussenegger/nvim-jdtls",
+    ft = "java",
+    config = function()
+      local config = {
+        cmd = { "/opt/homebrew/bin/jdtls" },
+        root_dir = vim.fs.dirname(vim.fs.find({ "gradlew", ".git", "mvnw" }, { upward = true })[1]),
+      }
+      require("jdtls").start_or_attach(config)
+      vim.keymap.set(
+        "n",
+        "<leader>cao",
+        "<Cmd>lua require'jdtls'.organize_imports()<CR>",
+        { desc = "Organise imports" }
+      )
+      vim.keymap.set(
+        "n",
+        "<leader>cav",
+        "<Cmd>lua require'jdtls'.extract_variable()<CR>",
+        { desc = "Extract variable" }
+      )
+      vim.keymap.set(
+        "n",
+        "<leader>cac",
+        "<Cmd>lua require'jdtls'.extract_constant()<CR>",
+        { desc = "Extract constant" }
+      )
+      vim.keymap.set(
+        "n",
+        "<leader>cam",
+        "<Esc><Cmd>lua require'jdtls'.extract_method(true)<CR>",
+        { desc = "Extract method" }
+      )
+    end,
   },
 
   {
