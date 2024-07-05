@@ -14,8 +14,8 @@ return {
       require "configs.lspconfig"
     end,
     keys = {
-      { "<leader>car", "<Cmd>lua vim.lsp.buf.rename()<CR>",      desc = "Rename" },
-      { "<leader>caa", "<Cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code action..." },
+      { "<leader>cr", "<Cmd>lua vim.lsp.buf.rename()<CR>",      desc = "Rename" },
+      { "<leader>ca", "<Cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code action..." },
     },
   },
 
@@ -57,25 +57,25 @@ return {
       require("jdtls").start_or_attach(config)
       vim.keymap.set(
         "n",
-        "<leader>cao",
+        "<leader>oi",
         "<Cmd>lua require'jdtls'.organize_imports()<CR>",
         { desc = "Organise imports" }
       )
       vim.keymap.set(
         "n",
-        "<leader>cav",
+        "<leader>ev",
         "<Cmd>lua require'jdtls'.extract_variable()<CR>",
         { desc = "Extract variable" }
       )
       vim.keymap.set(
         "n",
-        "<leader>cac",
+        "<leader>ec",
         "<Cmd>lua require'jdtls'.extract_constant()<CR>",
         { desc = "Extract constant" }
       )
       vim.keymap.set(
         "n",
-        "<leader>cam",
+        "<leader>em",
         "<Esc><Cmd>lua require'jdtls'.extract_method(true)<CR>",
         { desc = "Extract method" }
       )
