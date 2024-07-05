@@ -9,6 +9,7 @@ local servers = {
   "html",
   "clangd",
   "cssls",
+  "jsonnet_ls",
   "lua_ls",
   "lemminx",
   -- "java_language_server",

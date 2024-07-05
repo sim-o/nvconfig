@@ -39,6 +39,20 @@ return {
       local config = {
         cmd = { "/opt/homebrew/bin/jdtls" },
         root_dir = vim.fs.dirname(vim.fs.find({ "gradlew", ".git", "mvnw" }, { upward = true })[1]),
+        completion = {
+          filteredTypes = {
+            "com.sun.*",
+            "io.micrometer.shaded.*",
+            "java.awt.*",
+            "jdk.*", "sun.*",
+          },
+          sources = {
+            organizeImports = {
+              starThreshold = 9999,
+              staticStarThreshold = 9999,
+            },
+          },
+        }
       }
       require("jdtls").start_or_attach(config)
       vim.keymap.set(
@@ -127,4 +141,12 @@ return {
       }
     end,
   },
+
+  {
+    'nvim-telescope/telescope-ui-select.nvim',
+    lazy = false,
+    init = function()
+      require("telescope").load_extension("ui-select")
+    end,
+  }
 }
