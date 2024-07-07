@@ -132,19 +132,52 @@ return {
   },
 
   {
+    'gsuuon/tshjkl.nvim',
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = true,
+    opts = {
+      keymaps = {
+        toggle = '<M-x>',
+      },
+    },
+    keys = {
+      { "<M-x>", desc = "Toggle tshjkl" }
+    }
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    lazy = false,
+    config = true,
+  },
+
+  {
+    "stevearc/aerial.nvim",
+    config = true,
+    opts = {},
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons"
+    },
+    keys = {
+      { "<leader>a",  "<Cmd>AerialNavToggle<CR>",                                     desc = "Aerial toggle" },
+      { "<leader>fl", "<Cmd>lua require('telescope').extensions.aerial.aerial()<CR>", desc = "Telescope aerial" },
+      { "}",          "<Cmd>AerialNext<CR>",                                          desc = "Aerial next" },
+      { "{",          "<Cmd>AerialPrev<CR>",                                          desc = "Aerial previous" },
+    },
+  },
+
+  {
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
-    config = function()
-      require("nvim-surround").setup {
-        -- Configuration here, or leave empty to use defaults
-      }
-    end,
+    config = true,
   },
 
   {
     'nvim-telescope/telescope-ui-select.nvim',
-    lazy = false,
+    dependencies = { "nvim-telescope/telescope.nvim" },
     init = function()
       require("telescope").load_extension("ui-select")
     end,
