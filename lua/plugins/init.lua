@@ -63,19 +63,19 @@ return {
       )
       vim.keymap.set(
         "n",
-        "<leader>ev",
+        "<leader>ov",
         "<Cmd>lua require'jdtls'.extract_variable()<CR>",
         { desc = "Extract variable" }
       )
       vim.keymap.set(
         "n",
-        "<leader>ec",
+        "<leader>oc",
         "<Cmd>lua require'jdtls'.extract_constant()<CR>",
         { desc = "Extract constant" }
       )
       vim.keymap.set(
         "n",
-        "<leader>em",
+        "<leader>om",
         "<Esc><Cmd>lua require'jdtls'.extract_method(true)<CR>",
         { desc = "Extract method" }
       )
