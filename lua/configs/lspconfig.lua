@@ -10,7 +10,19 @@ local servers = {
   clangd = {},
   cssls = {},
   dartls = {},
-  gopls = {},
+  gopls = {
+    settings = {
+      hints = {
+        rangeVariableTypes = true,
+        parameterNames = true,
+        constantValues = true,
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        functionTypeParameters = true,
+      },
+    }
+  },
   jsonnet_ls = {},
   kotlin_language_server = {
     settings = {
@@ -26,7 +38,6 @@ local servers = {
   lua_ls = {},
   lemminx = {},
   marksman = {},
-  rust_analyzer = {},
   tailwindcss = {},
   tsserver = {
     settings = {

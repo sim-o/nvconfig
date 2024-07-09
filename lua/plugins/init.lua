@@ -39,6 +39,64 @@ return {
     },
   },
   { "Bilal2453/luvit-meta", lazy = true },
+  {
+    "hrsh7th/nvim-cmp",
+    opts = function(_, opts)
+      opts.sources = opts.sources or {}
+      table.insert(opts.sources, {
+        name = "lazydev",
+        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+      })
+    end,
+  },
+
+  {
+    'mrcjkb/rustaceanvim',
+    version = '*',
+    lazy = false, -- This plugin is already lazy
+    init = function()
+      vim.g.rustaceanvim = {
+        server = {
+          settings = {
+            ["rust-analyzer"] = {
+              inlayHints = {
+                bindingModeHints = {
+                  enable = false,
+                },
+                chainingHints = {
+                  enable = true,
+                },
+                closingBraceHints = {
+                  enable = true,
+                  minLines = 25,
+                },
+                closureReturnTypeHints = {
+                  enable = "never",
+                },
+                lifetimeElisionHints = {
+                  enable = "never",
+                  useParameterNames = false,
+                },
+                maxLength = 25,
+                parameterHints = {
+                  enable = true,
+                },
+                reborrowHints = {
+                  enable = "never",
+                },
+                renderColons = true,
+                typeHints = {
+                  enable = true,
+                  hideClosureInitialization = false,
+                  hideNamedConstructor = false,
+                },
+              },
+            },
+          },
+        },
+      }
+    end
+  },
 
   {
     "mfussenegger/nvim-jdtls",
@@ -127,7 +185,6 @@ return {
         "html-lsp",
         "css-lsp",
         "prettier",
-        "prettierd",
         "typescript-language-server",
         "tailwind-language-server",
       },
@@ -218,7 +275,56 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     keys = {
-      { "<leader>gl", "<cmd>lua require'gitsigns'.toggle_current_line_blame()<cr>", desc = "Annotate" },
+      -- Navigation
+      {
+        ']c',
+        function()
+          local gitsigns = require 'gitsigns'
+          if vim.wo.diff then
+            vim.cmd.normal({ ']c', bang = true })
+          else
+            gitsigns.nav_hunk('next')
+          end
+        end,
+        desc = "Next change"
+      },
+      {
+        '[c',
+        function()
+          local gitsigns = require 'gitsigns'
+          if vim.wo.diff then
+            vim.cmd.normal({ '[c', bang = true })
+          else
+            gitsigns.nav_hunk('prev')
+          end
+        end,
+        desc = "Previous change"
+      },
+
+      -- Actions
+      { '<leader>hs', ':Gitsigns stage_hunk<CR>',                             mode = 'n', desc = "Stage hunk" },
+      { '<leader>hs', ':Gitsigns stage_hunk<CR>',                             mode = 'v', desc = "Stage hunk" },
+      { '<leader>hr', ':Gitsigns reset_hunk<CR>',                             mode = 'n', desc = "Reset hunk" },
+      { '<leader>hr', ':Gitsigns reset_hunk<CR>',                             mode = 'v', desc = "Reset hunk" },
+      { '<leader>hS', '<cmd>Gitsigns stage_buffer<CR>',                       mode = 'n', desc = "Stage buffer" },
+      { '<leader>hu', '<cmd>Gitsigns undo_stage_hunk<CR>',                    mode = 'n', desc = "Undo stage hunk" },
+      { '<leader>hR', '<cmd>Gitsigns reset_buffer<CR>',                       mode = 'n', desc = "Reset buffer" },
+      { '<leader>hp', '<cmd>Gitsigns preview_hunk<CR>',                       mode = 'n', desc = "Preview hunk" },
+      { '<leader>hb', '<cmd>lua require"gitsigns".blame_line{full=true}<CR>', mode = 'n', desc = "Blame line (full)" },
+      { '<leader>tb', '<cmd>Gitsigns toggle_current_line_blame<CR>',          mode = 'n', desc = "Blame line" },
+      { '<leader>hd', '<cmd>Gitsigns diffthis<CR>',                           mode = 'n', desc = "Diff current buffer" },
+      { '<leader>hD', '<cmd>lua require"gitsigns".diffthis("~")<CR>',         mode = 'n', desc = "Diff current buffer" },
+      { '<leader>td', '<cmd>Gitsigns toggle_deleted<CR>',                     mode = 'n', desc = "Toggle deleted" },
+
+      -- Text object
+      { 'ih',         ':<C-U>Gitsigns select_hunk<CR>',                       mode = 'o', desc = "Select hunk" },
+      { 'ih',         ':<C-U>Gitsigns select_hunk<CR>',                       mode = 'x', desc = "Select hunk" },
+    }
+  },
+  {
+    "tpope/vim-fugitive",
+    keys = {
+      { "<leader>ga", "<cmd>Git blame<cr>", desc = "Annotate" },
     }
   },
 
