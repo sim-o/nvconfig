@@ -7,6 +7,7 @@ vim.o.cursorlineopt = 'both'
 vim.o.timeout = true
 vim.o.timeoutlen = 50
 vim.o.shortmess = vim.o.shortmess .. 'I'
+vim.o.conceallevel = 2
 
 -- -- toggle inlay_hint off in insert mode
 -- vim.api.nvim_create_autocmd("InsertEnter", {
