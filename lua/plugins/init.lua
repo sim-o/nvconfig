@@ -18,6 +18,14 @@ return {
       { "<leader>ca", "<Cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code action..." },
     },
   },
+  {
+    "MysticalDevil/inlay-hints.nvim",
+    event = "LspAttach",
+    dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require("inlay-hints").setup()
+    end
+  },
 
   {
     "folke/lazydev.nvim",
@@ -36,6 +44,7 @@ return {
     "mfussenegger/nvim-jdtls",
     ft = "java",
     config = function()
+      local jdtls = require 'jdtls'
       local config = {
         cmd = { "/opt/homebrew/bin/jdtls" },
         root_dir = vim.fs.dirname(vim.fs.find({ "gradlew", ".git", "mvnw" }, { upward = true })[1]),
@@ -52,9 +61,25 @@ return {
               staticStarThreshold = 9999,
             },
           },
-        }
+        },
+        settings = {
+          java = {
+            autobuild = { enabled = false },
+            contentProvider = { preferred = 'fernflower' },
+            saveActions = {
+              organizeImports = true,
+            },
+            inlayHints = {
+              parameterNames = {
+                enabled = "all",
+                exclusions = { "this" },
+              },
+            },
+            signatureHelp = { enabled = true },
+          }
+        },
       }
-      require("jdtls").start_or_attach(config)
+      jdtls.start_or_attach(config)
       vim.keymap.set(
         "n",
         "<leader>oi",
@@ -154,14 +179,20 @@ return {
 
   {
     "stevearc/aerial.nvim",
-    config = true,
-    opts = {},
+    opts = {
+      on_attach = function(bufnr)
+        -- Jump forwards/backwards with '{' and '}'
+        vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+        vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+      end,
+    },
+    lazy = false,
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons"
     },
     keys = {
-      { "<leader>a",  "<Cmd>AerialNavToggle<CR>",                                     desc = "Aerial toggle" },
+      { "<leader>a",  "<Cmd>AerialToggle<CR>",                                        desc = "Aerial toggle" },
       { "<leader>fl", "<Cmd>lua require('telescope').extensions.aerial.aerial()<CR>", desc = "Telescope aerial" },
       { "}",          "<Cmd>AerialNext<CR>",                                          desc = "Aerial next" },
       { "{",          "<Cmd>AerialPrev<CR>",                                          desc = "Aerial previous" },
@@ -173,6 +204,20 @@ return {
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = true,
+  },
+
+  {
+    "nvim-telescope/telescope.nvim",
+    keys = {
+      { "<leader>fk", "<cmd>Telescope keymaps<cr>", desc = "Telescope keymaps" },
+    }
+  },
+
+  {
+    "lewis6991/gitsigns.nvim",
+    keys = {
+      { "<leader>gl", "<cmd>lua require'gitsigns'.toggle_current_line_blame()<cr>", desc = "Annotate" },
+    }
   },
 
   {
