@@ -26,6 +26,7 @@ local servers = {
   lua_ls = {},
   lemminx = {},
   marksman = {},
+  rust_analyzer = {},
   tailwindcss = {},
   tsserver = {
     settings = {
