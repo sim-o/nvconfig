@@ -258,6 +258,8 @@ return {
     },
   },
 
+  { 'mfussenegger/nvim-dap' },
+
   {
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -362,5 +364,42 @@ return {
         },
       },
     }
+  },
+
+  {
+    "nvim-neotest/neotest",
+    lazy = false,
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-neotest/neotest-jest",
+      "marilari88/neotest-vitest",
+      "mrcjkb/rustaceanvim",
+    },
+    init = function()
+      require('neotest').setup {
+        adapters = {
+          require('rustaceanvim.neotest'),
+          require('neotest-jest')({
+            jestCommand = "npm test --",
+            jestConfigFile = "jest.config.json",
+            env = { CI = true },
+            cwd = function()
+              return vim.fn.getcwd()
+            end,
+          }),
+          require("neotest-vitest")
+        },
+      }
+    end,
+    keys = {
+      { "<leader>tt", "<cmd>lua require'neotest'.run.run()<cr>",                                    desc = "Run nearest test" },
+      { "<leader>tf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>",                desc = "Run all tests in file" },
+      { "<leader>tl", "<cmd>lua require('neotest').run.run_last()<cr>",                             desc = "Run Last Test" },
+      { "<leader>tL", '<cmd>lua require("neotest").run.run_last({ strategy = "dap" })<cr>',         desc = "Debug last test" },
+      { "<leader>tw", "<cmd>lua require('neotest').run.run({ jestCommand = 'jest --watch ' })<cr>", desc = "Run watch", },
+    },
   }
 }
