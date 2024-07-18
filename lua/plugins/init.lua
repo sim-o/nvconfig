@@ -180,6 +180,13 @@ return {
   },
 
   {
+    "mbbill/undotree",
+    keys = {
+      { "<leader><F5>", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" }
+    }
+  },
+
+  {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
@@ -335,8 +342,6 @@ return {
     },
   },
 
-  { 'mfussenegger/nvim-dap' },
-
   {
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -444,6 +449,19 @@ return {
   },
 
   {
+    "mfussenegger/nvim-dap",
+    lazy = false,
+    keys = {
+      { "<F7>",  "<cmd>lua require'dap'.toggle_breakpoint()<cr>", desc = "Debug - toggle breakpoint" },
+      { "<F8>",  "<cmd>lua require'dap'.continue()<cr>",          desc = "Debug - continue" },
+      { "<F9>",  "<cmd>lua require'dap'.step_over()<cr>",         desc = "Debug - step over" },
+      { "<F10>", "<cmd>lua require'dap'.step_into()<cr>",         desc = "Debug - step into" },
+      { "<F11>", "<cmd>lua require'dap'.repl.open()<cr>",         desc = "Debug - inspect repl" },
+      { "<F12>", "<cmd>help dap-widgets<cr>",                     desc = "Debug - inspect widget ui" }
+    }
+  },
+
+  {
     "nvim-neotest/neotest",
     lazy = false,
     dependencies = {
@@ -454,6 +472,7 @@ return {
       "nvim-neotest/neotest-jest",
       "marilari88/neotest-vitest",
       "mrcjkb/rustaceanvim",
+      "rcasia/neotest-java",
     },
     init = function()
       require('neotest').setup {
@@ -467,12 +486,17 @@ return {
               return vim.fn.getcwd()
             end,
           }),
-          require("neotest-vitest")
+          require("neotest-vitest"),
+          require("neotest-java")({
+            ignore_wrapper = false, -- whether to ignore maven/gradle wrapper
+            junit_jar = nil,        -- default: .local/share/nvim/neotest-java/junit-platform-console-standalone-[version].jar
+          })
         },
       }
     end,
     keys = {
       { "<leader>tt", "<cmd>lua require'neotest'.run.run()<cr>",                                    desc = "Run nearest test" },
+      { "<leader>tT", '<cmd>lua require("neotest").run.run({strategy = "dap"})<cr>',                desc = "Run nearest test in debugger" },
       { "<leader>tf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>",                desc = "Run all tests in file" },
       { "<leader>tl", "<cmd>lua require('neotest').run.run_last()<cr>",                             desc = "Run Last Test" },
       { "<leader>tL", '<cmd>lua require("neotest").run.run_last({ strategy = "dap" })<cr>',         desc = "Debug last test" },
