@@ -174,15 +174,17 @@ return {
     dependencies = {
       "tpope/vim-repeat",
     },
+    lazy = false,
     init = function()
-      require("leap").add_default_mappings()
+      vim.keymap.set({ 'n', 'x', 'o' }, 'S', '<Plug>(leap)')
     end,
   },
 
   {
     "mbbill/undotree",
+    lazy = false,
     keys = {
-      { "<leader><F5>", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" }
+      { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" },
     }
   },
 
@@ -502,5 +504,23 @@ return {
       { "<leader>tL", '<cmd>lua require("neotest").run.run_last({ strategy = "dap" })<cr>',         desc = "Debug last test" },
       { "<leader>tw", "<cmd>lua require('neotest').run.run({ jestCommand = 'jest --watch ' })<cr>", desc = "Run watch", },
     },
-  }
+  },
+
+  {
+    'rmagatti/auto-session',
+    dependencies = {
+      'nvim-telescope/telescope.nvim', -- Only needed if you want to use sesssion lens
+    },
+    lazy = false,
+    config = true,
+    opts = {
+      auto_session_suppress_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
+      auto_save_enabled = true,
+      auto_restore_enabled = true,
+      auto_session_use_git_branch = true,
+    },
+    keys = {
+      { "<leader>fs", "<cmd>lua require('auto-session.session-lens').search_session()<cr>", desc = "Search sessions" }
+    }
+  },
 }
